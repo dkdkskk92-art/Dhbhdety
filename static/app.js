@@ -55,7 +55,7 @@ document.getElementById("btn-ttt-pvp").onclick = () => show("pvp");
 document.querySelectorAll("[data-back]").forEach(b => b.onclick = () => show("menu"));
 
 // ==========================================
-// КРЕСТИКИ-НОЛИКИ (Логика)
+// КРЕСТИКИ-НОЛИКИ
 // ==========================================
 document.querySelectorAll(".level").forEach(btn => {
   btn.onclick = async () => {
@@ -149,7 +149,7 @@ document.getElementById("btn-join-room").onclick = async () => {
 };
 
 // ==========================================
-// ШАХМАТЫ (Логика)
+// ШАХМАТЫ
 // ==========================================
 document.getElementById("btn-chess-create").onclick = async () => {
   try {
@@ -185,6 +185,8 @@ function renderBoardChess() {
   const g = state.game;
   if (!g || !g.board) return;
 
+  updateCapturedPieces(g.board);
+
   const fenParts = g.board.split(" ");
   const rows = fenParts[0].split("/");
   
@@ -215,12 +217,58 @@ function renderBoardChess() {
   }
 }
 
+function updateCapturedPieces(fen) {
+  const boardStr = fen.split(" ")[0];
+  const initial = { P: 8, N: 2, B: 2, R: 2, Q: 1, K: 1, p: 8, n: 2, b: 2, r: 2, q: 1, k: 1 };
+  const current = { P: 0, N: 0, B: 0, R: 0, Q: 0, K: 0, p: 0, n: 0, b: 0, r: 0, q: 0, k: 0 };
+  
+  for (let char of boardStr) {
+    if (isNaN(char) && char !== "/") {
+      if (current[char] !== undefined) current[char]++;
+    }
+  }
+
+  const capturedWhite = [];
+  const capturedBlack = [];
+  
+  const unicodePieces = {
+    'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'p': '♟',
+    'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'P': '♙'
+  };
+
+  for (let key in initial) {
+    const diff = initial[key] - (current[key] || 0);
+    if (diff > 0) {
+      for (let i = 0; i < diff; i++) {
+        if (key === key.toLowerCase()) {
+          capturedBlack.push(unicodePieces[key]); 
+        } else {
+          capturedWhite.push(unicodePieces[key]); 
+        }
+      }
+    }
+  }
+
+  const topEl = document.getElementById("captured-top");
+  const bottomEl = document.getElementById("captured-bottom");
+  
+  const enemyLosses = state.mySymbol === "X" ? capturedBlack : capturedWhite;
+  const myLosses = state.mySymbol === "X" ? capturedWhite : capturedBlack;
+
+  topEl.innerHTML = enemyLosses.map(p => `<span>${p}</span>`).join("");
+  bottomEl.innerHTML = myLosses.map(p => `<span>${p}</span>`).join("");
+}
+
 function createChessCell(container, square, pieceSymbol, isDark) {
   const cell = document.createElement("div");
   cell.className = `chess-cell ${isDark ? 'dark' : 'light'}`;
   cell.dataset.square = square;
-  cell.textContent = pieceSymbol;
   
+  const span = document.createElement("span");
+  span.className = "piece";
+  span.textContent = pieceSymbol;
+  cell.appendChild(span);
+
   if (state.chessSelectedSquare === square) cell.classList.add("selected");
   if (state.chessAvailableMoves.includes(square)) cell.classList.add("available");
 
@@ -264,13 +312,15 @@ function updateStatusChess() {
   const el = document.getElementById("game-status-chess");
   if (g.status === "finished") {
     el.textContent = g.winner === "draw" ? "🤝 Ничья" : (g.winner === state.mySymbol ? "🏆 Мат! Победа!" : "😔 Мат. Поражение");
+    document.getElementById("btn-surrender-chess").style.display = "none"; // Прячем кнопку сдачи
   } else {
     el.textContent = g.turn === state.mySymbol ? "Ваш ход" : "Ход соперника…";
+    document.getElementById("btn-surrender-chess").style.display = "block";
   }
 }
 
 // ==========================================
-// ОБЩАЯ ЛОГИКА (Ожидание и Опрос)
+// ОЖИДАНИЕ И ОПРОС
 // ==========================================
 function startWait(gameId, expiresIn, isChess = false) {
   let left = expiresIn;
@@ -322,5 +372,15 @@ function clearPoll() { clearInterval(state.pollTimer); state.pollTimer = null; }
 document.getElementById("btn-cancel-wait").onclick = () => { clearInterval(state.waitTimer); show("menu"); };
 document.getElementById("btn-exit-ttt").onclick = () => { clearPoll(); state.game = null; show("menu"); };
 document.getElementById("btn-exit-chess").onclick = () => { clearPoll(); state.game = null; show("menu"); };
+
+// Сдача в шахматах
+document.getElementById("btn-surrender-chess").onclick = async () => {
+  tg.showConfirm("Вы уверены, что хотите сдаться? Вы потеряете 5 искр.", async (ok) => {
+    if (ok) {
+      // Тут будет вызов API, который мы допишем на бэкенде
+      tg.showAlert("Функция сдачи в разработке!");
+    }
+  });
+};
 
 init();

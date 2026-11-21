@@ -92,14 +92,24 @@
 
   <!-- Экран Шахмат -->
   <section id="screen-game-chess" class="screen">
-    <div class="glass card game-card" style="padding: 10px;">
-      <div class="status" id="game-status-chess">Ваш ход</div>
+    <div class="glass card game-card" style="padding: 16px;">
+      <div class="status" id="game-status-chess" style="margin-bottom: 10px;">Ваш ход</div>
+      
+      <!-- Потери соперника (сверху) -->
+      <div class="captured-pieces" id="captured-top" style="height: 24px; margin-bottom: 4px;"></div>
+      
       <div class="chess-board" id="board-chess"></div>
-      <button class="btn ghost" id="btn-exit-chess" style="margin-top: 10px;">← В меню</button>
+      
+      <!-- Твои потери (снизу) -->
+      <div class="captured-pieces" id="captured-bottom" style="height: 24px; margin-top: 4px;"></div>
+      
+      <!-- Кнопки управления -->
+      <button class="btn" id="btn-surrender-chess" style="background: rgba(255, 100, 100, 0.2); border-color: rgba(255,100,100,0.4); color: #ffb3b3; margin-top: 16px;">🏳️ Сдаться (-5 ✦)</button>
+      <button class="btn ghost" id="btn-exit-chess">← В меню</button>
     </div>
   </section>
 
 </div>
 <script src="/static/app.js"></script>
 </body>
-  </html>
+</html>

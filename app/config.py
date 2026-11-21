@@ -4,7 +4,7 @@ from pydantic import field_validator
 class Settings(BaseSettings):
     BOT_TOKEN: str
     DATABASE_URL: str
-    WEBAPP_URL: str = "https://bot-1795029051-7968-ayzen.bothost.tech"
+    WEBAPP_URL: str = https://bot-1795241907-1794-ayzen.bothost.tech"
     START_SPARKS: int = 10
     PVP_WAIT_MINUTES: int = 10
 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Искры</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="glass topbar">
+    <div class="brand">✨ Искры</div>
+    <div class="balance"><span id="sparks">—</span> <span class="spark-ico">✦</span></div>
+  </header>
+
+  <!-- Главное меню -->
+  <section id="screen-menu" class="screen active">
+    <div class="glass card">
+      <h2>Выберите игру 👇</h2>
+      <button class="btn primary" id="btn-menu-tictactoe" style="margin-bottom: 16px;">❌⭕ Крестики-нолики</button>
+      <button class="btn primary" id="btn-menu-chess" style="background: linear-gradient(135deg, #3b2a8a, #22d3ee);">♟️ Шахматы</button>
+    </div>
+  </section>
+
+  <!-- Меню Крестиков-ноликов -->
+  <section id="screen-ttt-menu" class="screen">
+    <div class="glass card">
+      <h2>Крестики-нолики</h2>
+      <button class="btn" id="btn-ttt-bot">🤖 Ты vs Бот</button>
+      <button class="btn" id="btn-ttt-pvp">👥 Ты vs Человек</button>
+      <button class="btn ghost" data-back>← Назад</button>
+    </div>
+  </section>
+
+  <!-- Выбор уровня -->
+  <section id="screen-level" class="screen">
+    <div class="glass card">
+      <h2>Сложность бота</h2>
+      <button class="btn level" data-level="2">🙂 Средний</button>
+      <button class="btn level" data-level="3">😈 Сложный</button>
+      <button class="btn ghost" data-back>← Назад</button>
+    </div>
+  </section>
+
+  <!-- PvP Крестики: создать / войти -->
+  <section id="screen-pvp" class="screen">
+    <div class="glass card">
+      <h2>Игра с другом (ТТТ)</h2>
+      <button class="btn primary" id="btn-create-room" style="margin-bottom: 16px;">➕ Создать комнату</button>
+      <div class="join-row">
+        <input id="room-input" class="input" maxlength="6" placeholder="КОД" autocomplete="off">
+        <button class="btn btn-join" id="btn-join-room">Войти</button>
+      </div>
+      <button class="btn ghost" data-back>← Назад</button>
+    </div>
+  </section>
+
+  <!-- PvP Шахматы: создать / войти -->
+  <section id="screen-chess-menu" class="screen">
+    <div class="glass card">
+      <h2>Шахматы (PvP)</h2>
+      <button class="btn primary" id="btn-chess-create" style="margin-bottom: 16px;">➕ Создать комнату</button>
+      <div class="join-row">
+        <input id="chess-input" class="input" maxlength="6" placeholder="КОД" autocomplete="off">
+        <button class="btn btn-join" id="btn-chess-join">Войти</button>
+      </div>
+      <button class="btn ghost" data-back>← Назад</button>
+    </div>
+  </section>
+
+  <!-- Ожидание -->
+  <section id="screen-wait" class="screen">
+    <div class="glass card">
+      <h2>Комната создана</h2>
+      <p class="muted">Отправь код другу:</p>
+      <div class="room-code" id="room-code">------</div>
+      <p class="muted small" id="wait-timer">Ожидание: 10:00</p>
+      <button class="btn ghost" id="btn-cancel-wait">Отменить</button>
+    </div>
+  </section>
+
+  <!-- Экран Крестиков -->
+  <section id="screen-game-ttt" class="screen">
+    <div class="glass card game-card">
+      <div class="status" id="game-status-ttt">Ваш ход</div>
+      <div class="board" id="board-ttt"></div>
+      <button class="btn ghost" id="btn-exit-ttt">← В меню</button>
+    </div>
+  </section>
+
+  <!-- Экран Шахмат -->
+  <section id="screen-game-chess" class="screen">
+    <div class="glass card game-card" style="padding: 10px;">
+      <div class="status" id="game-status-chess">Ваш ход</div>
+      <div class="chess-board" id="board-chess"></div>
+      <button class="btn ghost" id="btn-exit-chess" style="margin-top: 10px;">← В меню</button>
+    </div>
+  </section>
+
+</div>
+<script src="/static/app.js"></script>
+</body>
+  </html>

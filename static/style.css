@@ -195,3 +195,20 @@ html, body {
 }
 
 @media (max-width: 400px) { .chess-cell { font-size: 9vw; } }
+
+/* =========================================
+   СРУБЛЕННЫЕ ФИГУРЫ
+   ========================================= */
+.captured-pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 20px;
+  line-height: 1;
+  align-items: center;
+  padding: 0 4px;
+  color: #fff;
+}
+.captured-pieces span {
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+}

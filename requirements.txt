@@ -6,3 +6,4 @@ asyncpg
 pydantic-settings
 telegram-init-data
 python-dotenv
+python-chess

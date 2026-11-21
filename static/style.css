@@ -1,0 +1,197 @@
+:root {
+  --bg1: #1a1440;
+  --bg2: #2a1d6b;
+  --accent: #7c5cff;
+  --accent2: #22d3ee;
+  --glass-bg: rgba(255,255,255,0.10);
+  --glass-border: rgba(255,255,255,0.22);
+  --text: #f5f3ff;
+  --muted: rgba(245,243,255,0.62);
+  --radius: 22px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: radial-gradient(120% 90% at 20% 0%, var(--bg2), var(--bg1) 60%),
+              radial-gradient(90% 80% at 90% 100%, #3b2a8a, transparent 70%);
+  background-attachment: fixed;
+  overscroll-behavior: none;
+}
+
+#app { max-width: 480px; margin: 0 auto; padding: 16px; min-height: 100vh; }
+
+/* =========================================
+   ЖИДКОЕ СТЕКЛО
+   ========================================= */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.22), transparent 45%);
+  pointer-events: none;
+}
+
+/* Шапка */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; margin-bottom: 18px;
+}
+.brand { font-weight: 700; font-size: 18px; letter-spacing: 0.3px; }
+.balance {
+  display: flex; align-items: center; gap: 6px;
+  font-weight: 700;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid var(--glass-border);
+}
+.spark-ico { color: var(--accent2); filter: drop-shadow(0 0 6px rgba(34,211,238,0.6)); }
+
+/* Экраны */
+.screen { display: none; animation: fade 0.25s ease; }
+.screen.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.card { padding: 22px 20px; margin-bottom: 16px; box-sizing: border-box; width: 100%; }
+.card h2 { margin: 0 0 6px; font-size: 22px; }
+.muted { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+.muted.small { font-size: 12px; }
+
+/* Кнопки */
+.btn {
+  display: block; width: 100%;
+  padding: 15px 18px; margin-bottom: 12px;
+  font-size: 16px; font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+.btn:active { transform: scale(0.97); }
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  box-shadow: 0 6px 20px rgba(124,92,255,0.45);
+}
+.btn.ghost { background: transparent; border-color: rgba(255,255,255,0.16); color: var(--muted); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* =========================================
+   ИГРОВОЕ ПОЛЕ 3x3
+   ========================================= */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 6px 0 18px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42px; font-weight: 800;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.cell:active { transform: scale(0.94); }
+.cell.x { color: var(--accent2); text-shadow: 0 0 14px rgba(34,211,238,0.7); }
+.cell.o { color: #ff7eb6; text-shadow: 0 0 14px rgba(255,126,182,0.7); }
+.cell.win {
+  background: rgba(124,92,255,0.35);
+  box-shadow: 0 0 22px rgba(124,92,255,0.7), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.cell.disabled { cursor: default; }
+
+.status {
+  text-align: center; font-size: 16px; font-weight: 600;
+  margin-bottom: 14px; color: var(--text);
+}
+
+/* =========================================
+   PvP: Ввод кода и Ожидание
+   ========================================= */
+.join-row { display: flex; gap: 10px; margin-bottom: 12px; width: 100%; }
+
+.input {
+  flex: 1 1 0%; min-width: 0;
+  padding: 14px 16px;
+  font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  outline: none;
+  text-align: center;
+  box-sizing: border-box;
+}
+.input::placeholder { color: var(--muted); letter-spacing: 2px; font-weight: normal; }
+
+.btn-join { flex: 0 0 auto; width: auto; margin-bottom: 0; padding: 0 24px; white-space: nowrap; }
+
+.room-code {
+  font-size: 40px; font-weight: 800; letter-spacing: 8px; text-align: center;
+  margin: 8px 0 14px; color: var(--accent2);
+  text-shadow: 0 0 22px rgba(34,211,238,0.6);
+}
+
+/* =========================================
+   ШАХМАТЫ (Сетка 8x8)
+   ========================================= */
+.chess-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.chess-cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8vw;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.chess-cell.light { background: rgba(255, 255, 255, 0.15); color: #1a1440; }
+.chess-cell.dark { background: rgba(0, 0, 0, 0.3); color: #f5f3ff; }
+
+.chess-cell.selected { background: rgba(34, 211, 238, 0.4) !important; }
+
+.chess-cell.available::after {
+  content: "";
+  width: 25%; height: 25%;
+  background: rgba(124, 92, 255, 0.8);
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 10px rgba(124, 92, 255, 1);
+}
+
+@media (max-width: 400px) { .chess-cell { font-size: 9vw; } }
